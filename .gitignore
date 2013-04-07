@@ -1,0 +1,5 @@
+# Ignore VIM files
+*.swp
+
+# Ignore build outputs
+*.o
