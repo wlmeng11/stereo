@@ -1,22 +1,22 @@
 #include "argument_processing.hpp"
 
-struct arguments readArgs(int argc, char **argv) {
-	struct arguments arg = { 0, 0, 0, 0, 0, 0, NULL, -1, -1, -1, NULL, NULL };
+void ReadArgs(struct parameters *pars, int argc, char **argv) {
+	*pars = { 0, 0, 0, 0, 0, 0, NULL, -1, -1, -1, NULL, NULL };
 
 	for (int i = 1; i < argc; i++) {
 		if ( (strcmp(argv[i], "-g") == 0) || 
 				(strcmp(argv[i], "--gui") == 0) ) 
-			arg.gui = 1;
+			pars->gui = 1;
 		else if ( (strcmp(argv[i], "-w") == 0) ||
 				(strcmp(argv[i], "--write") == 0) )
-			arg.write = 1;
+			pars->write = 1;
 		else if ( (strcmp(argv[i], "-h") == 0) ||
 				(strcmp(argv[i], "--host") == 0) ) {
-			arg.host = 1;
-			// parse hostname
+			pars->host = 1;
+			// pars-> hostname
 			if (i + 1 <= argc - 1) {
 				i++;
-				arg.hostname = argv[i];
+				pars->hostname = argv[i];
 			}
 			else {
 				cerr << "Usage: -h <host IP>" << endl;
@@ -25,10 +25,10 @@ struct arguments readArgs(int argc, char **argv) {
 		}
 		else if ( (strcmp(argv[i], "-p") == 0) ||
 				(strcmp(argv[i], "--port") == 0)) {
-			arg.port = 1;
+			pars->port = 1;
 			if (i + 1 <= argc -1) {
 				i++;
-				sscanf(argv[i], "%d", &arg.portno);
+				sscanf(argv[i], "%d", &pars->portno);
 			}
 			else {
 				cerr << "Usage: -p <port number>" << endl;
@@ -37,12 +37,12 @@ struct arguments readArgs(int argc, char **argv) {
 		}
 		else if ( (strcmp(argv[i], "-c") == 0) ||
 				(strcmp(argv[i], "--cam") == 0) ) {
-			arg.cam = 1;
+			pars->cam = 1;
 			if (i + 2 <= argc - 1) {
 				i++;
-				sscanf(argv[i], "%d", &arg.camera1);
+				sscanf(argv[i], "%d", &pars->camera1);
 				i++;
-				sscanf(argv[i], "%d", &arg.camera2);
+				sscanf(argv[i], "%d", &pars->camera2);
 			}
 			else {
 				cerr << "Usage: -c <camera 1> <camera 2>" << endl;
@@ -51,12 +51,12 @@ struct arguments readArgs(int argc, char **argv) {
 		}
 		else if ( (strcmp(argv[i], "-f") == 0) ||
 				(strcmp(argv[i], "--file") == 0) ) {
-			arg.file = 1;
+			pars->file = 1;
 			if (i + 2 <= argc - 1) {
 				i++;
-				arg.filename1 = argv[i];
+				pars->filename1 = argv[i];
 				i++;
-				arg.filename2 = argv[i];
+				pars->filename2 = argv[i];
 			}
 			else {
 				cerr << "Usage: -f <file 1> <file 2>" << endl;
@@ -64,6 +64,43 @@ struct arguments readArgs(int argc, char **argv) {
 			}
 		}
 	}
+}
 
-	return arg;
+int PrintHelp(struct parameters *pars, int argc, char **argv) {
+	if (argc < 2) {
+		cerr << "Usage: " << argv[0] << " <options>" << endl;
+		// main help message
+		return 1;
+		
+		return 1;
+	}
+	else if (pars->port && !pars->host) {
+		cerr << "Please specify a hostname" << endl;
+		return 1;
+	}
+	else if (!pars->port && pars->host) {
+		cerr << "Please specify a portnumber" << endl;
+		return 1;
+	}
+	else if ( (!pars->file && !pars->cam) ||
+			(pars->file && pars->cam) ) {
+		cerr << "Please specify either 2 cameras or 2 media files" << endl;
+		return 1;
+	}
+}
+
+void PrintParams(struct parameters *pars) {
+	// print what we got from the arguments
+	if (pars->gui)
+		cout << "Using GUI" << endl;
+	if (pars->write)
+		cout << "Writing to file" << endl;
+	if (pars->host)
+		cout << "Hostname: " << pars->hostname << endl;
+	if (pars->port)
+		cout << "Port number: " << pars->portno << endl;
+	if (pars->cam)
+		cout << "Using cameras: " << pars->camera1 << " " << pars->camera2 << endl;
+	if (pars->file)
+		cout << "Using files: " << pars->filename1 << pars->filename2 << endl;
 }

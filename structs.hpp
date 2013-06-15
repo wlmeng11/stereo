@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-struct arguments {
-		// used as booleans to indicate presence of argument
+struct parameters {
+		// used as booleans to indicate presence of a parameter
 		int gui;
 		int write;
 		int host;
@@ -12,7 +12,7 @@ struct arguments {
 		int cam;
 		int file;
 		
-		// these are defined by arguments
+		// these are defined by user-supplied arguments
 		char *hostname;
 		int portno;
 		int camera1, camera2;
