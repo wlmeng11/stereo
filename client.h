@@ -8,10 +8,10 @@
 
 #define BUFFSIZE 80
 
-bool server_connect (char *hostname, int portno);
+int server_connect (char *hostname, int portno);
 
-bool server_send (double distance);
+int server_send (double distance);
 
-void server_disconnect();
+int server_disconnect();
 
 #endif

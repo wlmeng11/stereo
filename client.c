@@ -7,14 +7,18 @@ struct hostent *server;
 
 char *readbuffer;
 
-bool server_connect (char *hostname, int portno) {
+int server_connect (char *hostname, int portno) {
 	printf("Connecting to: %s\n", hostname);
+
 	return 0;
 }
 
-bool server_send (double distance) {
+int server_send (double distance) {
+
 	return 0;
 }
 
-void server_disconnect() {
+int server_disconnect() {
+
+	return 0;
 }
