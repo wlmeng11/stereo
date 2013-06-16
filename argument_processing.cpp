@@ -1,6 +1,6 @@
 #include "argument_processing.hpp"
 
-void ReadArgs(struct parameters *pars, int argc, char **argv) {
+int ReadArgs(struct parameters *pars, int argc, char **argv) {
 	*pars = { 0, 0, 0, 0, 0, 0, NULL, -1, -1, -1, NULL, NULL };
 
 	for (int i = 1; i < argc; i++) {
@@ -71,8 +71,6 @@ int PrintHelp(struct parameters *pars, int argc, char **argv) {
 		cerr << "Usage: " << argv[0] << " <options>" << endl;
 		// main help message
 		return 1;
-		
-		return 1;
 	}
 	else if (pars->port && !pars->host) {
 		cerr << "Please specify a hostname" << endl;
@@ -87,6 +85,8 @@ int PrintHelp(struct parameters *pars, int argc, char **argv) {
 		cerr << "Please specify either 2 cameras or 2 media files" << endl;
 		return 1;
 	}
+	else
+		return 0;
 }
 
 void PrintParams(struct parameters *pars) {

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void ReadArgs(struct parameters *pars, int argc, char **argv);
+int ReadArgs(struct parameters *pars, int argc, char **argv);
 int PrintHelp(struct parameters *pars, int argc, char **argv);
 void PrintParams(struct parameters *pars);
 

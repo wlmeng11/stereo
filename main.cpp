@@ -21,11 +21,13 @@ int main(int argc, char **argv) {
 	float distance;
 
 	struct parameters pars;
-	ReadArgs(&pars, argc, argv);
 
+	if (ReadArgs(&pars, argc, argv) ) {
+		// command line usage error
+		return 64;
+	}
 	if (PrintHelp(&pars, argc, argv) ) {
-		// user supplied arguments were invalid, so exit
-		return 1;
+		return 64;
 	}
 	PrintParams(&pars);
 	
