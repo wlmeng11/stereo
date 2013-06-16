@@ -102,5 +102,5 @@ void PrintParams(struct parameters *pars) {
 	if (pars->cam)
 		cout << "Using cameras: " << pars->camera1 << " " << pars->camera2 << endl;
 	if (pars->file)
-		cout << "Using files: " << pars->filename1 << pars->filename2 << endl;
+		cout << "Using files: " << pars->filename1 << " " << pars->filename2 << endl;
 }
