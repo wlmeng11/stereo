@@ -85,6 +85,8 @@ int main(int argc, char **argv) {
 		if (!capture1.read(left) ) break;
 		else if (!capture2.read(right) ) break;
 
+		cout << endl << "Current frame: " << i << endl;
+
 		CombineImages(left, right, combined);
 
 		if (pars.gui) {
