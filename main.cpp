@@ -14,7 +14,7 @@
 using namespace cv;
 using namespace std;
 
-void CombineImages (const Mat &left, const Mat &right, Mat &combined); // combines left and right images into one big image
+void CombineImages (const Mat &left, const Mat &right, Mat &combined); // display and check image dimensions
 
 int main(int argc, char **argv) {
 	VideoCapture capture1, capture2;
@@ -32,10 +32,10 @@ int main(int argc, char **argv) {
 		return EX_USAGE;
 	}
 	PrintParams(&pars);
-	
+
 	// connect to server if specified
 	if (!pars.host)
-			cout << "Not connecting to a server" << endl;
+		cout << "Not connecting to a server" << endl;
 	else {
 		if ( server_connect(pars.hostname, pars.portno) ) {
 			server_disconnect();
@@ -79,6 +79,8 @@ int main(int argc, char **argv) {
 
 	int delay = 1000/rate1;
 
+	if (pars.gui) namedWindow("Combined frames");
+
 	for(int i = 0;;i++) { // use i to count frames
 		if (!capture1.read(left) ) break;
 		else if (!capture2.read(right) ) break;
@@ -86,9 +88,9 @@ int main(int argc, char **argv) {
 		CombineImages(left, right, combined);
 
 		if (pars.gui) {
-			imshow("Left", left);
+			//imshow("Left", left);
 			//imshow("Right", right);
-			//imshow("Combined frames", combined);
+			imshow("Combined frames", combined);
 		}
 
 		if (capture1.get(CV_CAP_PROP_FRAME_COUNT) == 1)
@@ -100,15 +102,25 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-// this needs to go in a class in another file eventually
 void CombineImages (const Mat &left, const Mat &right, Mat &combined) {
 	cout << "Left height: " << left.rows << endl;
 	cout << "Left width: " << left.cols << endl;
 	cout << "Right height: " << right.rows << endl;
 	cout << "Right width: " << right.cols << endl;
-	//combined image doesn't exist yet
 	cout << "Combined height: " << combined.rows << endl;
 	cout << "Combined width: " << combined.cols << endl;
 
-	Mat imageROI; // region of interest
+	if (left.rows != right.rows) {
+		cerr << "Mismatching image heights!" << endl;
+		exit(EX_DATAERR);
+	}
+	else if (left.cols != right.cols) {
+		cerr << "Mismatching image widths!" << endl;
+		exit(EX_DATAERR);
+	}
+	resize(left, combined, Size(left.cols+right.cols,left.rows), 0, 0, INTER_LINEAR);
+
+	const vector<cv::KeyPoint> kp;
+	const vector<cv::DMatch> dm;
+	drawMatches(left, kp, right, kp, dm, combined);
 }
