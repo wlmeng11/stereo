@@ -24,10 +24,10 @@ int main(int argc, char **argv) {
 
 	if (ReadArgs(&pars, argc, argv) ) {
 		// command line usage error
-		return 64;
+		return EX_USAGE;
 	}
 	if (PrintHelp(&pars, argc, argv) ) {
-		return 64;
+		return EX_USAGE;
 	}
 	PrintParams(&pars);
 	
