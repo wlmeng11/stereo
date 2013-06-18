@@ -4,3 +4,9 @@
 # Ignore build outputs
 *.o
 main
+
+# Ignore media files
+*.jpg
+*.avi
+*.mov
+*.mp4
